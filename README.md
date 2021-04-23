@@ -15,7 +15,7 @@ docker run -d \
   --name=tsharp \
   -p 7780:8080 \
   -v /path/to/config/data:/root/data \
-  -v /path/to/download:/download
+  -v /path/to/download:/download \
   --restart unless-stopped \
   banyazavi/tsharp
 ```

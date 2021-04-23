@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 echo '    __                                              _ '
 echo '   / /_  ____ _____  __  ______ _____  ____ __   __(_)'
 echo '  / __ \/ __ `/ __ \/ / / / __ `/_  / / __ `/ | / / / '
@@ -12,7 +12,7 @@ echo
 if [ ! -d /home/banya/ ]; then
   ## Create user:group
   echo "zavi:x:$PGID:" >> /etc/group
-  echo "banya:x:$PUID:$PGID:banya:/home/banya:/bin/ash" >> /etc/passwd
+  echo "banya:x:$PUID:$PGID:banya:/home/banya:/bin/bash" >> /etc/passwd
   echo "banya:!::0:::::" >> /etc/shadow
 
   mkdir -p /home/banya
@@ -27,15 +27,15 @@ if [ ! -f /root/data/h2.mv.db ]; then
   cp /defaults/h2.mv.db /root/data/h2.mv.db
   chown banya:zavi /root/data/h2.mv.db
 fi
-if [ -f /www/torr/UserConfig.php ]; then
-  chown www:www /www/torr/UserConfig.php
-  chmod 0777 /www/torr/UserConfig.php
+if [ -f /var/www/html/torr/UserConfig.php ]; then
+  chown www-data:www-data /var/www/html/torr/UserConfig.php
+  chmod 0777 /var/www/html/torr/UserConfig.php
 fi
 
 # Run Transmission & Nginx (PHP7)
 su - banya -c "/usr/bin/transmission-daemon -g /root/data"
-/usr/sbin/php-fpm7
-/usr/sbin/nginx
+service php7.4-fpm start
+service nginx start
 
 # Delete update cache & Refresh
 rm /tmp/torr.updatecheck
