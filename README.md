@@ -22,7 +22,7 @@ docker run -d \
 
 # Parameters
 
-## Mandatory Parameters
+## Required Parameters
 
 | Parameter | Function |
 |-----------|----------|
@@ -40,7 +40,7 @@ docker run -d \
 | -e PGID | 실행 그룹 ID |
 | -p 80 | It's torr! RSS 접속 포트 |
 | -p 9091 | Transmission RPC 접속 포트 |
-| -v /www/torr/UserConfig.php | It's torr! 사용자 정의 설정 |
+| -v /var/www/html/torr | It's torr! 스크립트 디렉토리 |
 | -v /anywhere/in/container | 추가 다운로드 디렉토리 |
 
 ### PUID / PGID
@@ -60,10 +60,10 @@ docker run -d \
 
 이 포트를 개방하여 내장된 트랜스미션을 범용으로 사용할 수도 있으나, **torrssen2**의 다운로드 파일 관리 동작과 충돌할 수 있으므로 권장하지 않습니다.
 
-### -v /www/torr/UserConfig.php
+### -v /var/www/html/torr
 
-이 포트는 **It's torr!**의 사용자 정의 설정을 바인딩합니다.  
-사용자 정의 설정의 사용 방법은 다음을 참조하세요. [/grollcake-torr/torr#업데이트](https://github.com/grollcake-torr/torr#%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8)
+이 볼륨은 **It's torr!**의 스크립트가 있는 디렉토리입니다.  
+이 디렉토리를 바인딩하여 외부에서 **It's torr!**의 소스를 직접 수정하거나, 로그를 확인할 수 있습니다.
 
 ### -v /anywhere/in/container
 
@@ -86,5 +86,5 @@ docker run -d \
 
 # Notice
 
-- 본 이미지는 amd64 이외 아키텍처에서의 동작을 보증하지 않습니다.
+- 본 이미지는 amd64/aarch64 이외 아키텍처에서의 동작을 보증하지 않습니다.
 - 공개 사이트의 상황에 따라 RSS 제공이 지연, 거부 또는 제공 자체가 불가능할 수 있습니다.

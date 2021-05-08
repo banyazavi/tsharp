@@ -26,14 +26,13 @@ RUN rm /var/www/html/index.nginx-debian.html && \
 # Copy files
 COPY ./defaults/settings.json /defaults/settings.json
 COPY ./defaults/default /etc/nginx/sites-available/default
-COPY --chown=www-data:www-data ./defaults/torr.php /var/www/html/torr/torr.php
-COPY --chown=www-data:www-data ./defaults/UserConfig.php /var/www/html/torr/UserConfig.php
+COPY --chown=www-data:www-data ./defaults/torr.php /defaults/torr.php
+COPY --chown=www-data:www-data ./defaults/UserConfig.php /defaults/UserConfig.php
 COPY ./defaults/h2.mv.db /defaults/h2.mv.db
 COPY ./defaults/run.sh /run.sh
 
 # Initial script
-RUN chown root:root /run.sh && \
-    chmod 0555 /run.sh
+RUN chmod 0555 /run.sh
 
 # Ports and Volumes
 EXPOSE 8080

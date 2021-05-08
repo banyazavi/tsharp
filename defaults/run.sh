@@ -11,36 +11,53 @@ echo
 # Initial settings
 if [ ! -d /home/banya/ ]; then
   ## Create user:group
+  echo "Create a user as PUID=$PUID PGID=$PGID"
   echo "zavi:x:$PGID:" >> /etc/group
   echo "banya:x:$PUID:$PGID:banya:/home/banya:/bin/bash" >> /etc/passwd
   echo "banya:!::0:::::" >> /etc/shadow
-
   mkdir -p /home/banya
   chown banya:zavi -R /home/banya /root
   chmod 0755 -R /home/banya /root
 fi
 if [ ! -f /root/data/settings.json ]; then
+  echo "Create Transmission settings"
   cp /defaults/settings.json /root/data/settings.json
   chown banya:zavi /root/data/settings.json
 fi
+if [ ! -f /var/www/html/torr/torr.php ]; then
+  echo "Create It's torr!"
+  cp /defaults/torr.php /var/www/html/torr/torr.php
+fi
+if [ ! -f /var/www/html/torr/UserConfig.php ]; then
+  echo "Create It's torr! UserConfig"
+  cp /defaults/UserConfig.php /var/www/html/torr/UserConfig.php
+fi
+if [ -d /var/www/html/torr ]; then
+  chown -R www-data:www-data /var/www/html/torr
+  chmod -R 0777 /var/www/html/torr
+fi
 if [ ! -f /root/data/h2.mv.db ]; then
+  echo "Create torrssen2 database for T#"
   cp /defaults/h2.mv.db /root/data/h2.mv.db
   chown banya:zavi /root/data/h2.mv.db
 fi
-if [ -f /var/www/html/torr/UserConfig.php ]; then
-  chown www-data:www-data /var/www/html/torr/UserConfig.php
-  chmod 0777 /var/www/html/torr/UserConfig.php
-fi
 
 # Run Transmission & Nginx (PHP7)
-su - banya -c "/usr/bin/transmission-daemon -g /root/data"
+su - banya -c "transmission-daemon -g /root/data"
 service php7.4-fpm start
 service nginx start
 
 # Delete update cache & Refresh
-rm /tmp/torr.updatecheck
-rm /tmp/torr-userconfig.updatecheck
+if [ -f /tmp/torr.updatecheck ]; then
+  echo "Delete the update checker of It's torr!"
+  rm /tmp/torr.updatecheck
+fi
+if [ -f /tmp/torr-userconfig.updatecheck ]; then
+  echo "Delete the update checker of It's torr! UserConfig"
+  rm /tmp/torr-userconfig.updatecheck
+fi
+echo "Refresh It's torr!"
 wget -q --spider http://localhost/torr/torr.php
 
 # Bootstrap torr
-/opt/java/openjdk/bin/java -Xshareclasses -Xquickstart -jar /torrssen2.jar
+java -Xshareclasses -Xquickstart -jar /torrssen2.jar
