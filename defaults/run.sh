@@ -26,7 +26,7 @@ if [ ! -f /root/data/settings.json ]; then
 fi
 if [ ! -f /var/www/html/torr/torr.php ]; then
   echo "Create It's torr!"
-  cp /defaults/torr.php /var/www/html/torr/torr.php
+  wget https://raw.githubusercontent.com/banyazavi/tsharp/main/defaults/torr.php -O /var/www/html/torr/torr.php
 fi
 if [ -d /var/www/html/torr ]; then
   chown -R www-data:www-data /var/www/html/torr
@@ -34,7 +34,7 @@ if [ -d /var/www/html/torr ]; then
 fi
 if [ ! -f /root/data/h2.mv.db ]; then
   echo "Create torrssen2 database for TSharp"
-  cp /defaults/h2.mv.db /root/data/h2.mv.db
+  wget https://github.com/banyazavi/tsharp/raw/main/defaults/h2.mv.db -O /root/data/h2.mv.db
   chown banya:zavi /root/data/h2.mv.db
 fi
 
